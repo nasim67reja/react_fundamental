@@ -1,5 +1,7 @@
 import "./grid.css";
 import Card from "./card";
+import NumberCom from "./useState/usestate";
+/////////////////
 const MainCard = (props) => {
   return (
     <Card>
@@ -12,7 +14,10 @@ const MainCard = (props) => {
           Lorem ipsum dolor sit amet elit. Modi quisquam, rem ipsum dolore,
           animi officia a voluptatum non quia
         </p>
-        <button className="btn">Add to Cart</button>
+        <div className="card-footer">
+          <NumberCom></NumberCom>
+          <button className="btn">Add to Cart</button>
+        </div>
       </div>
     </Card>
   );

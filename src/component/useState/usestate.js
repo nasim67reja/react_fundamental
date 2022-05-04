@@ -9,7 +9,7 @@ function NumberCom() {
   //function version
   const Increment = () => {
     setCount((prevCount) => prevCount + 1);
-    setCount((prevCount) => prevCount + 1);
+    // setCount((prevCount) => prevCount + 1);
     //  the number will be add 2 but this will be not work in version1
   };
 
