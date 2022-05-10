@@ -6,14 +6,25 @@ const AddItem = (props) => {
   const addItemHandler = (e) => {
     setEnteredValue(e.target.value);
   };
+  const [isValid, setIsValid] = useState(true);
   const submitHandler = (e) => {
     e.preventDefault();
+    // Empty input field
+    if (enteredValue.trim().length === 0) {
+      setIsValid(false);
+      return;
+    }
     props.onReceive(enteredValue);
+    setIsValid(true);
+
     setEnteredValue("");
   };
 
   return (
-    <form onSubmit={submitHandler} className="input-field">
+    <form
+      onSubmit={submitHandler}
+      className={`input-field ${isValid ? "" : "invalid"}`}
+    >
       <input
         type="text"
         value={enteredValue}

@@ -6,9 +6,12 @@
   padding: 2rem;
 }
 .input {
-  border: none;
   border: 1px solid silver;
   padding: 0.4rem 1rem;
+  /* background-color: #cee; */
+}
+.input:focus {
+  outline: none;
 }
 .btn {
   border: none;
@@ -21,4 +24,11 @@
   transition: all 0.3s;
   opacity: 0.8;
   cursor: pointer;
+}
+/* invalid */
+.invalid {
+  background-color: red;
+}
+.invalid .input {
+  background-color: #cee;
 }
