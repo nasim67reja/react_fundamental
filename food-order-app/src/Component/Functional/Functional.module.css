@@ -1,0 +1,72 @@
+.section-product{
+    background-color: #fff;
+    max-width: 90rem;
+    margin: 4rem auto;
+    padding: 1rem 3rem;
+    padding-bottom: 3rem;
+    border-radius: 1.4rem;
+}
+
+
+
+
+/* ////////// */
+.info {
+    /* border: 2px solid black; */
+    border-bottom: 1px solid rgba(192, 192, 192, 0.911);
+    margin-top: 1.5rem;
+    /* margin-bottom: 1rem; */
+    padding-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*  */
+h3 {
+    font-size: 2rem;
+    opacity: 0.9;
+}
+
+p {
+    font-size: 1.5rem;
+    margin: 0.5rem 0;
+    font-style: italic;
+}
+
+.number {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: #ad5502;
+}
+
+.add {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+label {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.input {
+    width: 4rem;
+    margin-left: 1.5rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 1.6rem;
+}
+
+button {
+    font-size: 1.8rem;
+    cursor: pointer;
+    background-color: #8a2b06;
+    border: 1px solid #8a2b06;
+    color: white;
+    padding: 0.6rem 3.2rem;
+    border-radius: 20px;
+    font-weight: bold;
+}
