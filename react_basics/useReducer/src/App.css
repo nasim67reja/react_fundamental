@@ -1,0 +1,13 @@
+button {
+  margin: 2rem 0 0 2rem;
+  padding: 0.2rem;
+}
+h1 {
+  margin-top: 3rem;
+  font-size: 3rem;
+}
+.value {
+  font-size: 3rem;
+  margin: 2rem 0 0 2rem;
+  padding-left: 6rem;
+}
