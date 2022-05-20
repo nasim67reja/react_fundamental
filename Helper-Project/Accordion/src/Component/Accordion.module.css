@@ -1,0 +1,58 @@
+ul>h1{
+    font-size: 3.5rem;
+    color: blueviolet;
+}
+.accordion-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  list-style: none;
+  max-width: 70rem;
+  margin: 5rem auto;
+  padding: 2rem;
+  box-shadow: 1px 1px 15px rgba(0,0,0,0.1);
+
+}
+.accordion-list li {
+  width: 100%;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  cursor: pointer;
+  border: 1px solid silver;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.heading span {
+  font-size: 2rem;
+}
+.heading-primary {
+  font-size: 3rem;
+  margin-top: 0;
+}
+.description {
+  padding-top: 1rem;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  animation: text 0.3s ease-in 1;
+}
+@keyframes text {
+  0% {
+    transform: translatey(-2rem);
+    opacity: 0;
+  }
+  33% {
+    height: 33%;
+  }
+  75% {
+    height: 75%;
+  }
+  100% {
+    transform: translateX(0rem);
+    opacity: 1;
+  }
+}
