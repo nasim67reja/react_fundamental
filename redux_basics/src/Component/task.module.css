@@ -1,0 +1,26 @@
+.task {
+  max-width: 30rem;
+  margin: 5rem auto;
+  background-color: aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.task input{
+    margin-right: 2rem;
+    padding: 5px 10px;
+}
+
+.task-list{
+    max-width: 30rem;
+    margin: 2rem auto;
+    list-style: none;
+}
+.task-list li{
+    background-color: aliceblue;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin: 2rem 0;
+}
