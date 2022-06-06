@@ -1,0 +1,38 @@
+.header {
+  height: 8rem;
+  padding: 2rem 0;
+  background-color: #115e59;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  max-width: 100rem;
+  margin: 0 auto;
+  font-size: 2rem;
+  color: aliceblue;
+  padding: 0 2rem;
+}
+
+.mainNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  gap: 2rem;
+}
+
+.link:link,
+.link:visited {
+  color: #14b8a6;
+  text-decoration: none;
+  padding: 5px 1rem;
+  border: 1px solid #14b8a6;
+  border-radius: 1rem;
+}
+
+.active:link,
+.active:visited {
+  color: white;
+  border: 1px solid white;
+  padding: 6px 1.2rem;
+}
