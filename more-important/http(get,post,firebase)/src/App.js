@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import MoviesList from "./components/MoviesList";
 import "./App.css";
+import { useCallback } from "react";
 
 function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null); // Initially no error
 
-  const fetchMoviesHandler = async () => {
+  const fetchMoviesHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null); // whenever this function fired we also might wanna reset the error to null
     try {
@@ -20,7 +21,12 @@ function App() {
       setError(error.message);
     }
     setIsLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    // function give various value this is why we need to use callback hook
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
 
   let content = <p> Found no movies.</p>;
 
