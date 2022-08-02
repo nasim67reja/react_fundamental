@@ -152,32 +152,22 @@ In this application there are three state (1) there are movies (2) there are no 
 we have to show the user different content in different state. Okay let's see the code for better understanding
 
 ```JavaScript
+import React, { useState } from "react";
 
-import React, { useState } from 'react';
-
-import MoviesList from './components/MoviesList';
-import './App.css';
+import MoviesList from "./components/MoviesList";
+import "./App.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  **const [isLoading, setIsLoading] = useState(false);** // Include
+  const [isLoading, setIsLoading] = useState(false); // Include
 
-  async function fetchMoviesHandler() {
+  const fetchMoviesHandler = async () => {
     setIsLoading(true);
-    const response = await fetch('https://swapi.dev/api/films/');
+    const response = await fetch("https://swapi.dev/api/films/");
     const data = await response.json();
-
-    const transformedMovies = data.results.map((movieData) => {
-      return {
-        id: movieData.episode_id,
-        title: movieData.title,
-        openingText: movieData.opening_crawl,
-        releaseDate: movieData.release_date,
-      };
-    });
-    setMovies(transformedMovies);
-    setIsLoading(false);
-  }
+    setMovies(data.results);
+    setIsLoading(false); // Include
+  };
 
   return (
     <React.Fragment>
@@ -194,6 +184,59 @@ function App() {
 }
 
 export default App;
+
+```
+
+**Understand the section where different element is being rendered in differnt state**
+
+## Handling Http Errors
+
+In every application we need to handle error.SO, this is a crucial part of the application
+
+```JavaScript
+
+import React, { useState } from "react";
+
+import MoviesList from "./components/MoviesList";
+import "./App.css";
+
+function App() {
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchMoviesHandler = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("https://swapi.dev/api/films/");
+      if (!response.ok) throw new Error("Something went Wrong");
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  };
+
+  let content = <p> Found no movies.</p>;
+
+  if (movies.length > 0) content = <MoviesList movies={movies} />;
+  if (error) content = <p>{error}</p>;
+  if (isLoading) content = <p>Loading...</p>;
+
+  return (
+    <React.Fragment>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+      </section>
+      <section>{content}</section>
+    </React.Fragment>
+  );
+}
+
+export default App;
+
 
 ```
 
