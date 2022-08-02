@@ -1,64 +1,33 @@
-///👇👇👇👇👇👇👇👇 sending and getting data in firebase
+import React from 'react';
 
-import { Fragment, useState, useEffect, useCallback } from "react";
+import MoviesList from './components/MoviesList';
+import './App.css';
 
 function App() {
-  const [data, setData] = useState("");
-  const getQuran = useCallback(async () => {
-    try {
-      const response = await fetch(
-        "https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ben-muhiuddinkhan.json"
-      );
+  const dummyMovies = [
+    {
+      id: 1,
+      title: 'Some Dummy Movie',
+      openingText: 'This is the opening text of the movie',
+      releaseDate: '2021-05-18',
+    },
+    {
+      id: 2,
+      title: 'Some Dummy Movie 2',
+      openingText: 'This is the second opening text of the movie',
+      releaseDate: '2021-05-19',
+    },
+  ];
 
-      if (!response.ok) throw new Error("Problem getting verse");
-
-      const data = await response.json();
-      // console.log(data.quran[0]);
-      setData(data.quran[0]);
-    } catch (err) {
-      console.log(err.message);
-    }
-  }, []);
-
-  // ///////////
-  useEffect(() => {
-    getQuran();
-  }, [getQuran]);
-
-  const sendVerseHandler = async () => {
-    const response = await fetch(
-      "https://react-auth-71ecf-default-rtdb.firebaseio.com/ayat.json",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const data2 = await response.json();
-    // console.log(data2);
-  };
-
-  // ///////
-  const getVerseHandler = async () => {
-    const response = await fetch(
-      "https://react-auth-71ecf-default-rtdb.firebaseio.com/ayat.json"
-    );
-    const data3 = await response.json();
-    for (const key in data) {
-      console.log(key);
-    }
-    console.log(data3);
-  };
   return (
-    <Fragment>
-      <div>hello</div>
-      <button onClick={sendVerseHandler}>add the verse</button>
-
-      <button onClick={getVerseHandler}>Get the verse</button>
-    </Fragment>
+    <React.Fragment>
+      <section>
+        <button>Fetch Movies</button>
+      </section>
+      <section>
+        <MoviesList movies={dummyMovies} />
+      </section>
+    </React.Fragment>
   );
 }
 
