@@ -10,61 +10,148 @@ npm i redux
 npm i react-redux
 ```
 
-## Table of contents
+## Creating and exporting redux file
 
-- [Build with](#build-with)
-- [The challenge](#the-challenge)
-- [Screenshot](#screenshot)
-- [Links](#links)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Useful resources](#useful-resources)
-- [Author](#author)
+```JavaScript
 
-### Build with
+import { createStore } from "redux";
 
-- I have used [ion-icons](https://ionic.io/ionicons) in this project
+const initialstore = {
+  currentValue: "",
+  element: [],
+  defaultInput: "",
+};
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CURRENT":
+      return {
+        ...state,
+        currentValue: `${action.value}`,
+        defaultInput: action.value,
+      };
+    case "CLICK":
+      return {
+        ...state,
+        defaultInput: "",
+        element: [...state.element, state.currentValue],
+      };
 
-### The challenge
+    default:
+      return state;
+  }
+};
 
-Users should be able to:
+const store = createStore(reducer, initialstore);
 
-- View the optimal layout for the site depending on their device's screen size
-- See hover states for all interactive elements on the page
-- See all testimonials in a horizontal slider
-- Receive an error message when the newsletter sign up `form` is submitted if:
-  - The `input` field is empty
-  - The email address is not formatted correctly
+export default store;
 
-### Screenshot
+```
 
-![](images/Screenshot.png)
+- And Now we wanna to connect our react file with this redux store. For this we need to provide this store to the react app. And we only have one redux store we only needs to provide only ones store we have
 
-### Links
+## Providing Redux
 
-- Solution URL: [Github Repo](https://github.com/nasim67reja/manage.github.io)
-- Live Site URL: [Live link](https://your-live-site-url.com)
+```JavaScript
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 
-### Built with
+import "./index.css";
+import App from "./App";
+import store from "./store";
 
-- Semantic HTML5 markup
-- CSS custom properties
-- Flexbox
-- CSS Grid
-- JavaScript
-- Desktop-first workflow
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
 
-### What I learned
+```
 
-By building this project I have learned how to create horzonlat scroll page layout
+- Now our React components can use the redux's data.They can get data and can dispatch data also.
 
-### Useful resources
+## Using Redux data in React Component
 
-- [Example resource 1](https://github.com/jonasschmedtmann/complete-javascript-course/blob/master/13-Advanced-DOM-Bankist/final/script.js)
-- [Example resource 2](https://css-tricks.com/pure-css-horizontal-scrolling/) -horizontal scrolling
+- we need to use the `JavaScript useSelector()` hook. Now we can access the data from redux store in our functional component by using useSelector().
+- We need to pass a function in their. a function which will be executed by react-redux. A function which then basically determines which piece of data we wanna extract from our store.
 
-## Author
+```JavaScript
+useSelector(state=>state.counter) // this will return a exact part of a state
+```
 
-- Website - [Nasim Reja](https://www.your-site.com)
-- Frontend Mentor - [@nasim67reja](https://www.frontendmentor.io/profile/@nasim67reja)
-- Twitter - [@Nasimreja97](https://www.twitter.com/@Nasimreja97)
+- Now the Great things is when we use useSelector() react-redux will automatically set up a subscription to the redux store for the component.<br>
+  So our component will be updated and will recieve the lates counter automatically whenever the data change in redux store.
+
+```JavaScript
+import { useSelector } from "react-redux";
+
+import Input from "./Input";
+import Button from "./Button";
+import styles from "./task.module.css";
+
+const Task = () => {
+  const element = useSelector((state) => state.element);
+
+  const content = element.map((el) => <li key={Math.random()}>{el}</li>);
+
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+  };
+  return (
+    <React.Fragment>
+      <div className={styles.task}>
+        <form onSubmit={formSubmitHandler}>
+          <Input />
+          <Button />
+        </form>
+      </div>
+      <ul className={styles["task-list"]}>{content}</ul>
+    </React.Fragment>
+  );
+};
+
+export default Task;
+
+```
+
+## Dispatching Actions from Inside Component
+
+for dispatching we need to use another hook from **react-redux** `JavaScript const dispatch=useDispatch()`
+
+Example:
+
+```JavaScript
+import { useDispatch } from "react-redux";
+
+const Button = () => {
+  const dispatch = useDispatch();
+  const addTaskHandler = () => {
+    dispatch({
+      type: "CLICK",
+    });
+  };
+  return (
+    <button type="submit" onClick={addTaskHandler}>
+      add task
+    </button>
+  );
+};
+
+export default Button;
+
+import { useDispatch, useSelector } from "react-redux";
+
+const Input = () => {
+  const dispatch = useDispatch();
+  const defaultInput = useSelector((state) => state.defaultInput);
+
+  const inputHandler = (e) => {
+    dispatch({ type: "CURRENT", value: e.target.value });
+  };
+  return <input type="text" value={defaultInput} onChange={inputHandler} />;
+};
+
+export default Input;
+
+```

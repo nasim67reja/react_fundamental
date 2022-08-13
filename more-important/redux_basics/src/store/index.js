@@ -8,6 +8,7 @@ const initialstore = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "CURRENT":
+      console.log(state.currentValue);
       return {
         ...state,
         currentValue: `${action.value}`,
