@@ -2,6 +2,38 @@
 
 ## This tutorial is about how to fetch data from api by the help of async await and fecth api
 
+## I Know I will Need this. That's why it is in the top
+
+```JavaScript
+import React, { useEffect, useState,useCallback } from "react";
+
+// Inside Component
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchMoviesHandler = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("https://swapi.dev/api/films/");
+      if (!response.ok) throw new Error("Something went Wrong");
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
+
+
+
+```
+
 ### Starter
 
 the starter application contains three major file `App.js` ,`MovieList.js` and `Movie.js`. app.js file contains the dummy data
@@ -152,32 +184,22 @@ In this application there are three state (1) there are movies (2) there are no 
 we have to show the user different content in different state. Okay let's see the code for better understanding
 
 ```JavaScript
+import React, { useState } from "react";
 
-import React, { useState } from 'react';
-
-import MoviesList from './components/MoviesList';
-import './App.css';
+import MoviesList from "./components/MoviesList";
+import "./App.css";
 
 function App() {
   const [movies, setMovies] = useState([]);
-  **const [isLoading, setIsLoading] = useState(false);** // Include
+  const [isLoading, setIsLoading] = useState(false); // Include
 
-  async function fetchMoviesHandler() {
+  const fetchMoviesHandler = async () => {
     setIsLoading(true);
-    const response = await fetch('https://swapi.dev/api/films/');
+    const response = await fetch("https://swapi.dev/api/films/");
     const data = await response.json();
-
-    const transformedMovies = data.results.map((movieData) => {
-      return {
-        id: movieData.episode_id,
-        title: movieData.title,
-        openingText: movieData.opening_crawl,
-        releaseDate: movieData.release_date,
-      };
-    });
-    setMovies(transformedMovies);
-    setIsLoading(false);
-  }
+    setMovies(data.results);
+    setIsLoading(false); // Include
+  };
 
   return (
     <React.Fragment>
@@ -197,64 +219,112 @@ export default App;
 
 ```
 
-- [The challenge](#the-challenge)
-- [Screenshot](#screenshot)
-- [Links](#links)
-  - [Built with](#built-with)
-  - [What I learned](#what-i-learned)
-  - [Useful resources](#useful-resources)
-- [Author](#author)
+**Understand the section where different element is being rendered in differnt state**
 
-### The challenge
+## Handling Http Errors
 
-Users should be able to:
-
-- View the optimal layout for the site depending on their device's screen size
-- See hover states for all interactive elements on the page
-- Receive an error message when the newsletter sign up `form` is submitted if:
-  - The `input` field is empty
-  - The email address is not formatted correctly
-
-### Screenshot
-
-![](images/Screenshot.png)
-
-### Links
-
-- Solution URL: [Github Repo](https://github.com/nasim67reja/manage.github.io)
-- Live Site URL: [Live link](https://your-live-site-url.com)
-
-### Built with
-
-- Reactjs
-- Tailwind CSS
-- Flexbox
-- CSS Grid
-- JavaScript
-- Desktop-first workflow
-
-- The API I used in this project
+In every application we need to handle error.SO, this is a crucial part of the application
 
 ```JavaScript
-const requests = {
-  requestPopular: `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=1`,
-  requestTopRated: `https://api.themoviedb.org/3/movie/top_rated?api_key=${key}&language=en-US&page=1`,
-  requestUpComing: `https://api.themoviedb.org/3/movie/upcoming?api_key=${key}&language=en-US&page=1`,
-};
+
+import React, { useState } from "react";
+
+import MoviesList from "./components/MoviesList";
+import "./App.css";
+
+function App() {
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const fetchMoviesHandler = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("https://swapi.dev/api/films/");
+      if (!response.ok) throw new Error("Something went Wrong");
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  };
+
+  let content = <p> Found no movies.</p>;
+
+  if (movies.length > 0) content = <MoviesList movies={movies} />;
+  if (error) content = <p>{error}</p>;
+  if (isLoading) content = <p>Loading...</p>;
+
+  return (
+    <React.Fragment>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+      </section>
+      <section>{content}</section>
+    </React.Fragment>
+  );
+}
+
+export default App;
+
+
 ```
 
-### What I learned
+## Using useEffect() for request
 
-- connecting with api by the help of fetch was awesome for me.But i still have some problem with fetch api I mean how to fetch data from server into my react application.I think I need to focus on this topic for my upcoming project.
-- This is also my first time with tailwind CSS. Tailwind css is awesome I like their utility class it's save a lot of time for building application.I also need to enhance my skills on Tailwind by building other projects
+we use useCallback here because the functions which execute previous and the next are not same.So it will be create infinite loop in useEffect.because we use the function as a dependencies in useEffect hook
 
-### Useful resources
+```JavaScript
+import React, { useEffect, useState } from "react";
 
-- [The Movie DB Api](https://www.themoviedb.org/documentation/api)
-- [Example resource 2](https://css-tricks.com/pure-css-horizontal-scrolling/) -horizontal scrolling
+import MoviesList from "./components/MoviesList";
+import "./App.css";
+import { useCallback } from "react";
 
-## Author
+function App() {
+  const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-- Website - [Nasim Reja](https://www.your-site.com)
-- Frontend Mentor - [@nasim67reja](https://www.frontendmentor.io/profile/@nasim67reja)
-- Twitter - [@Nasimreja97](https://www.twitter.com/@Nasimreja97)
+  const fetchMoviesHandler = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("https://swapi.dev/api/films/");
+      if (!response.ok) throw new Error("Something went Wrong");
+      const data = await response.json();
+      setMovies(data.results);
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+
+    fetchMoviesHandler();
+  }, [fetchMoviesHandler]);
+
+  let content = <p> Found no movies.</p>;
+
+  if (movies.length > 0) content = <MoviesList movies={movies} />;
+  if (error) content = <p>{error}</p>;
+  if (isLoading) content = <p>Loading...</p>;
+
+  return (
+    <React.Fragment>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+      </section>
+      <section>{content}</section>
+    </React.Fragment>
+  );
+}
+
+export default App;
+
+```
+
+# That's it..
