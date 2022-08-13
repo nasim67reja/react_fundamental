@@ -73,7 +73,7 @@ root.render(
 
 ## Using Redux data in React Component
 
-- we need to use the `JavaScript useSelector()` hook. Now we can access the data from redux store in our functional component by using useSelector().
+- we need to use the `useSelector()` hook. Now we can access the data from redux store in our functional component by using useSelector().
 - We need to pass a function in their. a function which will be executed by react-redux. A function which then basically determines which piece of data we wanna extract from our store.
 
 ```JavaScript
@@ -117,7 +117,7 @@ export default Task;
 
 ## Dispatching Actions from Inside Component
 
-for dispatching we need to use another hook from **react-redux** `JavaScript const dispatch=useDispatch()`
+for dispatching we need to use another hook from **react-redux** `const dispatch=useDispatch()`
 
 Example:
 
