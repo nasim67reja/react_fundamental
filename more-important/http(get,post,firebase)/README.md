@@ -34,6 +34,139 @@ import React, { useEffect, useState,useCallback } from "react";
 
 ```
 
+## Fetch api Get & Post
+
+2021 answer: just in case you land here looking for how to make GET and POST Fetch api requests using async/await or promises as compared to axios.
+
+I'm using jsonplaceholder fake API to demonstrate:
+
+Fetch api GET request using async/await:
+
+```js
+const asyncGetCall = async () => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await response.json();
+    // enter you logic when the fetch is successful
+    console.log(data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+    console.log(error);
+  }
+};
+
+asyncGetCall();
+```
+
+Fetch api POST request using async/await
+
+```js
+const asyncPostCall = async () => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // your expected POST request payload goes here
+        title: "My post title",
+        body: "My post content.",
+      }),
+    });
+    if (!response.ok) throw new Error("Something went Wrong");
+
+    const data = await response.json();
+    // enter you logic when the fetch is successful
+    console.log(data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+
+    console.log(error);
+  }
+};
+
+asyncPostCall();
+```
+
+GET request using Promises:
+
+```JavaScript
+
+fetch('https://jsonplaceholder.typicode.com/posts')
+  .then(res => res.json())
+  .then(data => {
+   // enter you logic when the fetch is successful
+    console.log(data)
+  })
+  .catch(error => {
+    // enter your logic for when there is an error (ex. error toast)
+   console.log(error)
+  })
+
+```
+
+POST request using Promises:
+
+```js
+const asyncGetCall = async () => {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+    const data = await response.json();
+    // enter you logic when the fetch is successful
+    console.log(data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+    console.log(error);
+  }
+};
+
+asyncGetCall();
+```
+
+GET request using Axios:
+
+```js
+const axiosGetCall = async () => {
+  try {
+    const { data } = await axios.get(
+      "https://jsonplaceholder.typicode.com/posts"
+    );
+    // enter you logic when the fetch is successful
+    console.log(`data: `, data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+    console.log(`error: `, error);
+  }
+};
+
+axiosGetCall();
+```
+
+POST request using Axios:
+
+```js
+const axiosPostCall = async () => {
+  try {
+    const { data } = await axios.post(
+      "https://jsonplaceholder.typicode.com/posts",
+      {
+        // your expected POST request payload goes here
+        title: "My post title",
+        body: "My post content.",
+      }
+    );
+    // enter you logic when the fetch is successful
+    console.log(`data: `, data);
+  } catch (error) {
+    // enter your logic for when there is an error (ex. error toast)
+    console.log(`error: `, error);
+  }
+};
+
+axiosPostCall();
+```
+
 ### Starter
 
 the starter application contains three major file `App.js` ,`MovieList.js` and `Movie.js`. app.js file contains the dummy data
