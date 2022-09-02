@@ -3,11 +3,7 @@
 For Install redux into your project run this command in terminal
 
 ```JavaScript
-npm i redux
-```
-
-```JavaScript
-npm i react-redux
+npm i redux react-redux
 ```
 
 ## Creating and exporting redux file
@@ -155,3 +151,8 @@ const Input = () => {
 export default Input;
 
 ```
+
+# IntroDuction to redux-toolkit
+
+- For install redux toolkit run this command on the terminal `npm i @reduxjs/toolkit`
+- now we can remove the `redux`. because it's already exist in `redux-toolkit`
