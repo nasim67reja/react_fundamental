@@ -1,31 +1,39 @@
 import { createStore } from "redux";
 
-const initialstore = {
-  currentValue: "",
-  element: [],
-  defaultInput: "",
-};
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "CURRENT":
-      console.log(state.currentValue);
-      return {
-        ...state,
-        currentValue: `${action.value}`,
-        defaultInput: action.value,
-      };
-    case "CLICK":
-      return {
-        ...state,
-        defaultInput: "",
-        element: [...state.element, state.currentValue],
-      };
+const initialState = { counter: 0, showCounter: true };
 
-    default:
-      return state;
+const counterReducer = (state = initialState, action) => {
+  if (action.type === "increment") {
+    return {
+      counter: state.counter + 1,
+      showCounter: state.showCounter,
+    };
   }
+
+  if (action.type === "increase") {
+    return {
+      counter: state.counter + action.amount,
+      showCounter: state.showCounter,
+    };
+  }
+
+  if (action.type === "decrement") {
+    return {
+      counter: state.counter - 1,
+      showCounter: state.showCounter,
+    };
+  }
+
+  if (action.type === "toggle") {
+    return {
+      showCounter: !state.showCounter,
+      counter: state.counter,
+    };
+  }
+
+  return state;
 };
 
-const store = createStore(reducer, initialstore);
+const store = createStore(counterReducer);
 
 export default store;

@@ -9,7 +9,52 @@ npm i redux react-redux
 ## Creating and exporting redux file
 
 ```JavaScript
+import { createStore } from "redux";
 
+const initialState = { counter: 0, showCounter: true };
+
+const counterReducer = (state = initialState, action) => {
+  if (action.type === "increment") {
+    return {
+      counter: state.counter + 1,
+      showCounter: state.showCounter,
+    };
+  }
+
+  if (action.type === "increase") {
+    return {
+      counter: state.counter + action.amount,
+      showCounter: state.showCounter,
+    };
+  }
+
+  if (action.type === "decrement") {
+    return {
+      counter: state.counter - 1,
+      showCounter: state.showCounter,
+    };
+  }
+
+  if (action.type === "toggle") {
+    return {
+      showCounter: !state.showCounter,
+      counter: state.counter,
+    };
+  }
+
+  return state;
+};
+
+const store = createStore(counterReducer);
+
+export default store;
+
+
+```
+
+## Alternative
+
+```js
 import { createStore } from "redux";
 
 const initialstore = {
@@ -40,7 +85,6 @@ const reducer = (state, action) => {
 const store = createStore(reducer, initialstore);
 
 export default store;
-
 ```
 
 - And Now we wanna to connect our react file with this redux store. For this we need to provide this store to the react app. And we only have one redux store we only needs to provide only ones store we have
@@ -63,6 +107,7 @@ root.render(
   </Provider>
 );
 
+
 ```
 
 - Now our React components can use the redux's data.They can get data and can dispatch data also.
@@ -79,80 +124,94 @@ useSelector(state=>state.counter) // this will return a exact part of a state
 - Now the Great things is when we use useSelector() react-redux will automatically set up a subscription to the redux store for the component.<br>
   So our component will be updated and will recieve the lates counter automatically whenever the data change in redux store.
 
+### dispatch and useSelector
+
 ```JavaScript
-import { useSelector } from "react-redux";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import Input from "./Input";
-import Button from "./Button";
-import styles from "./task.module.css";
+import classes from "./Counter.module.css";
 
-const Task = () => {
-  const element = useSelector((state) => state.element);
+const Counter = () => {
+  const dispatch = useDispatch();
+  const counter = useSelector((state) => state.counter);
+  const show = useSelector((state) => state.showCounter);
 
-  const content = element.map((el) => <li key={Math.random()}>{el}</li>);
-
-  const formSubmitHandler = (e) => {
-    e.preventDefault();
+  const incrementHandler = () => {
+    dispatch({ type: "increment" });
   };
+
+  const increaseHandler = () => {
+    dispatch({ type: "increase", amount: 10 });
+  };
+
+  const decrementHandler = () => {
+    dispatch({ type: "decrement" });
+  };
+
+  const toggleCounterHandler = () => {
+    dispatch({ type: "toggle" });
+  };
+
   return (
-    <React.Fragment>
-      <div className={styles.task}>
-        <form onSubmit={formSubmitHandler}>
-          <Input />
-          <Button />
-        </form>
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      {show && <div className={classes.value}>{counter}</div>}
+      <div>
+        <button onClick={incrementHandler}>Increment</button>
+        <button onClick={increaseHandler}>Increase by 10</button>
+        <button onClick={decrementHandler}>Decrement</button>
       </div>
-      <ul className={styles["task-list"]}>{content}</ul>
-    </React.Fragment>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
   );
 };
 
-export default Task;
+export default Counter;
 
-```
-
-## Dispatching Actions from Inside Component
-
-for dispatching we need to use another hook from **react-redux** `const dispatch=useDispatch()`
-
-Example:
-
-```JavaScript
-import { useDispatch } from "react-redux";
-
-const Button = () => {
-  const dispatch = useDispatch();
-  const addTaskHandler = () => {
-    dispatch({
-      type: "CLICK",
-    });
-  };
-  return (
-    <button type="submit" onClick={addTaskHandler}>
-      add task
-    </button>
-  );
-};
-
-export default Button;
-
-import { useDispatch, useSelector } from "react-redux";
-
-const Input = () => {
-  const dispatch = useDispatch();
-  const defaultInput = useSelector((state) => state.defaultInput);
-
-  const inputHandler = (e) => {
-    dispatch({ type: "CURRENT", value: e.target.value });
-  };
-  return <input type="text" value={defaultInput} onChange={inputHandler} />;
-};
-
-export default Input;
 
 ```
 
 # IntroDuction to redux-toolkit
 
+### see after 242 number lecture
+
 - For install redux toolkit run this command on the terminal `npm i @reduxjs/toolkit`
 - now we can remove the `redux`. because it's already exist in `redux-toolkit`
+
+## Adding State Slices
+
+```js
+import { createSlice, configureStore } from "@reduxjs/toolkit";
+
+const initialCounterState = { counter: 0, showCounter: true };
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: initialCounterState,
+  reducers: {
+    increment(state) {
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter = state.counter + action.payload;
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter;
+    },
+  },
+});
+
+const store = configureStore({
+  reducer: counterSlice.reducer,
+});
+export const counterActions = counterSlice.actions;
+
+export default store;
+```
+
+- now we can find this reducers by `counterSlice.actions.reducersName`
+- so we will export the actions for better experience `const counterActions=counterSlice.actions`

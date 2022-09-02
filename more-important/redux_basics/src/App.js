@@ -1,15 +1,13 @@
-import { Fragment } from "react";
-
-import Task from "./Component/task";
+import React from "react";
+import Counter from "./components/Counter";
+import CounterToolkit from "./components/Counter-toolkit";
 
 function App() {
   return (
-    <Fragment>
-      <h1 style={{ color: "white", margin: "2rem auto", maxWidth: "30rem" }}>
-        Basic Redux
-      </h1>
-      <Task></Task>
-    </Fragment>
+    <>
+      <Counter />;
+      <CounterToolkit />
+    </>
   );
 }
 
