@@ -215,3 +215,90 @@ export default store;
 
 - now we can find this reducers by `counterSlice.actions.reducersName`
 - so we will export the actions for better experience `const counterActions=counterSlice.actions`
+
+- now we will use and dispatch as like before.
+  some example:
+
+```js
+const dispatch = useDispatch();
+const counter = useSelector((state) => state.counter);
+
+const increaseHandler = () => {
+  dispatch(counterActions.increase({ amount: 10 })); // ekhane ja dibo tai payload er moddhe jabe
+};
+```
+
+## It's time to work with Multiple Slice
+
+`index.js` file
+
+```js
+import { configureStore } from "@reduxjs/toolkit";
+
+import counterReducer from "./counter";
+import authReducer from "./auth";
+
+const store = configureStore({
+  reducer: { counter: counterReducer, auth: authReducer },
+});
+
+export default store;
+```
+
+`auth.js` file :
+
+```js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialAuthState = {
+  isAuthenticated: false,
+};
+
+const authSlice = createSlice({
+  name: "authentication",
+  initialState: initialAuthState,
+  reducers: {
+    login(state) {
+      state.isAuthenticated = true;
+    },
+    logout(state) {
+      state.isAuthenticated = false;
+    },
+  },
+});
+
+export const authActions = authSlice.actions;
+
+export default authSlice.reducer;
+```
+
+`counter.js` file :
+
+```js
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialCounterState = { counter: 0, showCounter: true };
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: initialCounterState,
+  reducers: {
+    increment(state) {
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter = state.counter + action.payload;
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter;
+    },
+  },
+});
+
+export const counterActions = counterSlice.actions;
+
+export default counterSlice.reducer;
+```

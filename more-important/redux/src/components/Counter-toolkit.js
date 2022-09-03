@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { counterActions } from "../store/redux-toolkit";
+// import { counterActions } from "../store/redux-toolkit";
+import { counterActions } from "../store";
 
 import classes from "./Counter.module.css";
 
@@ -14,7 +15,7 @@ const CounterToolkit = () => {
   };
 
   const increaseHandler = () => {
-    dispatch({ type: "increase", amount: 10 });
+    dispatch(counterActions.increase({ amount: 10 })); // ekhane ja dibo tai payload er moddhe jabe
   };
 
   const decrementHandler = () => {
